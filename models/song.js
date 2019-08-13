@@ -11,7 +11,7 @@ var Schema = mongoose.Schema;
 var SongSchema = Schema({
     number: String,
     name: String,
-    duration: Number,
+    duration: String,
     file: String,
     //hacer referencia a otro objeto de la bd
     album: { type: Schema.ObjectId, ref: 'Album' }

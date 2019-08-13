@@ -16,7 +16,6 @@ function getArtist(req, res) {
     var artistId = req.params.id;
 
     Artist.findById(artistId, (err, artist) => {
-        //si no llega un error
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -27,8 +26,6 @@ function getArtist(req, res) {
             }
         }
     });
-
-    res.status(200).send({ message: 'Método de getArtist' });
 }
 
 //método para listar artistas
@@ -114,12 +111,9 @@ function deleteArtist(req, res) {
         if (err) {
             res.status(500).send({ message: 'Error al eliminar el artista' });
         } else {
-            if (!artistUpdated) {
+            if (!artistRemoved) {
                 res.status(404).send({ message: 'El artista no ha sido eliminado' });
             } else {
-                //console.log();
-                res.status(200).send({ artistRemoved });
-
                 //cuando se elimina un artista se elimina todos sus albums
                 Album.find({ artist: artistRemoved.id }).remove((err, albumRemoved) => {
                     if (err) {
@@ -169,9 +163,9 @@ function uploadImage(req, res) {
         if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'gif') {
             //actualizar la imágen que hay el la bd del usu
             Artist.findByIdAndUpdate(artistId, { image: file_name }, (err, artistUpdated) => {
-                //si no llega los datos del usuario
+                //si no llega los datos del artista
                 if (!artistUpdated) {
-                    res.status(404).send({ message: 'No se ha podido actualizar el usuario!' });
+                    res.status(404).send({ message: 'No se ha podido actualizar el artista!' });
                 } else { //sino
                     res.status(200).send({ artist: artistUpdated });
                 }

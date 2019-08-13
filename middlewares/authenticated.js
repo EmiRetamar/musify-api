@@ -21,7 +21,7 @@ exports.ensureAuth = function(req, res, next) {
     //si hay cabecera se guarda dentro de la variable token
     //si el token viene con comillas por delante y detras se la quitamos con el método de js replace
     //replace(/['"]+/g, '') y las reemplazomos con nada
-    var token = headers.authorization.replace(/['"]+/g, '');
+    var token = req.headers.authorization.replace(/['"]+/g, '');
 
     //decodificar el token
     try {

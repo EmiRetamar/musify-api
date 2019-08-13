@@ -43,7 +43,7 @@ function getSongs(req, res) {
         var find = Song.find({ album: albumId }).sort('number');
     }
 
-    //popular los datos de albums, 
+    //popular los datos de albums,
     find.populate({
         path: 'album',
         populate: {
@@ -76,7 +76,7 @@ function saveSong(req, res) {
 
     song.save((err, songStored) => {
         if (err) {
-            res.status(500).send({ message: 'Error en servidor' });
+            res.status(500).send({ message: 'Error en el servidor' });
         } else {
             if (!songStored) {
                 res.status(404).send({ message: 'No se ha guardado la canción' });
@@ -110,7 +110,7 @@ function deleteSong(req, res) {
     var songId = req.params.id;
 
     //cuando se elimina un artista se elimina todos sus albums
-    //se puede hacer de esta manera 
+    //se puede hacer de esta manera
     //Album.find({ artist: albumId }).remove((err, albumRemoved) => {
     //o se puede hacer asi...
     Song.findByIdAndRemove(songId, (err, songRemoved) => {

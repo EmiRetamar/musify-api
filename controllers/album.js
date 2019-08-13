@@ -69,7 +69,7 @@ function getAlbums(req, res) {
         var find = Album.find({ artist: artistId }).sort('year');
     }
 
-    //popular los datos de artista, 
+    //popular los datos de artista,
     find.populate({ path: 'artist' }).exec((err, albums) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
@@ -106,7 +106,7 @@ function deleteAlbum(req, res) {
     var albumId = req.params.id;
 
     //cuando se elimina un artista se elimina todos sus albums
-    //se puede hacer de esta manera 
+    //se puede hacer de esta manera
     //Album.find({ artist: albumId }).remove((err, albumRemoved) => {
     //o se puede hacer asi...
     Album.findByIdAndRemove(albumId, (err, albumRemoved) => {
@@ -154,9 +154,9 @@ function uploadImage(req, res) {
         if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'gif') {
             //actualizar la imágen que hay el la bd del usu
             Album.findByIdAndUpdate(albumId, { image: file_name }, (err, albumUpdated) => {
-                //si no llega los datos del usuario
+                //si no llega los datos del album
                 if (!albumUpdated) {
-                    res.status(404).send({ message: 'No se ha podido actualizar el usuario!' });
+                    res.status(404).send({ message: 'No se ha podido actualizar el album!' });
                 } else { //sino
                     res.status(200).send({ album: albumUpdated });
                 }
@@ -169,7 +169,7 @@ function uploadImage(req, res) {
     }
 }
 
-//método para extraer la imágen del usuario
+//método para extraer la imágen del album
 function getImageFile(req, res) {
     var imageFile = req.params.imageFile;
     var path_file = './uploads/albums/' + imageFile;

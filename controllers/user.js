@@ -1,5 +1,5 @@
 'use strict'
-/* 
+/*
 Los errores:
 200 - cuando faltan datos, error de servidor, no se ha guardado un dato
 400 - no existe un registro en la bd, o un dato en la bd
@@ -31,13 +31,10 @@ function saveUser(req, res) {
     //recojer los parametros que llegan por el post
     var params = req.body;
 
-    //ver que llega por los parametros
-    console.log(params);
-
     user.name = params.name;
     user.surname = params.surname;
     user.email = params.email;
-    user.role = 'ROLE_USER';
+    user.role = 'ROLE_ADMIN';
     user.image = 'null';
 
     //encryptar la pass
