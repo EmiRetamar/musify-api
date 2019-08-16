@@ -38,7 +38,7 @@ function getArtists(req, res) {
     }
 
     //indicar la cantidad de artistas que recibira por página
-    var itemsPerPage = 5;
+    var itemsPerPage = 4;
 
     //sacar todos los artistas, sortearlo por nombre
     Artist.find().sort('name').paginate(page, itemsPerPage, function(err, artists, total) {
