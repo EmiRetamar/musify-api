@@ -6,7 +6,14 @@ var mongoose = require('mongoose');
 //cargar modulo app
 var app = require('./app');
 //configurar un puerto para nuestra API
-var port = process.env.PORT || 3977;
+//var port = process.env.PORT || 3977;
+
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
+const DB_URI = process.env.DB_URI;
+const PORT = process.env.PORT || 3977;
 
 /*
 Para eliminar el aviso de mongoose que devuelve por la consola donde hemos
