@@ -4,12 +4,18 @@
     "description": "Proyecto de API Rest con NodeJS",
     "main": "index.js",
     "scripts": {
-        "start": "nodemon index.js",
+        "start": "cross-env NODE_ENV=production node index.js",
+        "postinstall": "npm run build",
+        "build": "cross-env NODE_ENV=production webpack",
+        "server:dev": "webpack-dev-server",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "BrandConstantin",
     "license": "ISC",
     "dependencies": {
+        "cors": "^2.8.5",
+        "cross-env": "^5.2.0",
+        "dotenv": "6.2.0",
         "bcrypt-nodejs": "0.0.3",
         "body-parser": "^1.17.2",
         "connect-multiparty": "^2.0.0",
