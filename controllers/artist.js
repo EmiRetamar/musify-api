@@ -15,7 +15,7 @@ var Song = require('../models/song');
 function getArtist(req, res) {
     var artistId = req.params.id;
 
-    Artist.findById(artistId, (err, artist) => {
+    Artist.findById(artistId).populate({ path: 'gender' }).exec((err, artist) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -59,6 +59,25 @@ function getArtists(req, res) {
     });
 }
 
+function searchArtists(req, res) {
+    var text = req.params.text;
+
+    // El filtro utilizado no discrimina entre mayusculas y minusculas
+    Artist.find({ 'name': new RegExp('.*' + text + '.*', 'i') }, (err, artists) => {
+        // Filtro que discrimina entre mayusculas y minusculas
+        //{'name': { $regex: '.*' + text + '.*' } }
+        if (err) {
+            res.status(500).send({ message: 'Error en la petición' });
+        } else {
+            if (!artists) {
+                res.status(404).send({ message: 'Artistas no encontrados' });
+            } else {
+                res.status(200).send({ artists });
+            }
+        }
+    });
+}
+
 //método para guardar artistas
 function saveArtist(req, res) {
     //crear objeto del artista
@@ -69,6 +88,7 @@ function saveArtist(req, res) {
     artist.name = params.name;
     artist.description = params.description;
     artist.image = 'null';
+    artist.gender = params.gender;
 
     artist.save((err, artistStored) => {
         //si da un error al guardar el artista
@@ -92,7 +112,7 @@ function updateArtist(req, res) {
 
     Artist.findByIdAndUpdate(artistId, update, (err, artistUpdated) => {
         if (err) {
-            res.status(500).send({ message: 'Error al guardar el artista' });
+            res.status(500).send({ message: 'Error al actualizar el artista' });
         } else {
             if (!artistUpdated) {
                 res.status(404).send({ message: 'Artista no actualizado correctamente' });
@@ -202,5 +222,6 @@ module.exports = {
     updateArtist,
     deleteArtist,
     uploadImage,
-    getImageFile
+    getImageFile,
+    searchArtists
 }

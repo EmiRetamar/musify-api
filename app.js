@@ -1,4 +1,3 @@
-//
 'use strict'
 
 //cargar librerias express y body-parser
@@ -13,6 +12,7 @@ var user_routes = require('./routes/user');
 var artist_routes = require('./routes/artist');
 var album_routes = require('./routes/album');
 var song_routes = require('./routes/song');
+var gender_routes = require('./routes/gender');
 
 //configurar bodyParser
 //convertir los datos que nos llega por las peticiones http en objeto
@@ -38,6 +38,7 @@ app.use('/api', user_routes);
 app.use('/api', artist_routes);
 app.use('/api', album_routes);
 app.use('/api', song_routes);
+app.use('/api', gender_routes);
 
 //ejemplo de ruta
 /*app.get('/pruebas', function(req, res) { //una función de callback

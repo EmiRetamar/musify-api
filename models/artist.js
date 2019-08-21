@@ -11,7 +11,8 @@ var Schema = mongoose.Schema;
 var ArtistSchema = Schema({
     name: String,
     description: String,
-    image: String
+    image: String,
+    gender: { type: Schema.ObjectId, ref: 'Gender' }
 });
 
 //para poder utilizar este objeto fuera del fichero hay que exportarlo

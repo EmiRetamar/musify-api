@@ -3,7 +3,7 @@
 
 //importar libreria
 var jwt = require('jwt-simple');
-//importar libreria para comprobar las fechas del token 
+//importar libreria para comprobar las fechas del token
 //comprobando la fecha de creción y de expiración
 var moment = require('moment');
 //para genere el hash secreta

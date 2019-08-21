@@ -7,7 +7,6 @@ var fs = require('fs');
 //cargar módulo de paginación
 var mongoosePaginate = require('mongoose-pagination');
 
-var Artist = require('../models/artist');
 var Album = require('../models/album');
 var Song = require('../models/song');
 
@@ -28,8 +27,53 @@ function getAlbum(req, res) {
             }
         }
     });
+}
 
-    //res.status(200).send({ message: 'Método de getAlbum' });
+//método de sacar todos los albums
+function getAlbums(req, res) {
+    //tenemos que sacar todos los album de un artista
+    var artistId = req.params.artist;
+
+    if (!artistId) {
+        //sacar todos los album de la bd ordenados por artista
+        var find = Album.find({}).sort('artist');
+    } else {
+        //sacar todos los album de la bd según una condición
+        var find = Album.find({ artist: artistId }).sort('year');
+    }
+
+    //popular los datos de artista,
+    find.populate({ path: 'artist', populate: { path: 'gender', model: 'Gender' } }).exec((err, albums) => {
+        if (err) {
+            res.status(500).send({ message: 'Error en la petición' });
+        } else {
+            if (!albums) {
+                res.status(404).send({ message: 'No se encuentra los albums' });
+            } else {
+                res.status(200).send({ albums });
+            }
+        }
+    });
+}
+
+function searchAlbums(req, res) {
+    var text = req.params.text;
+
+    // El filtro utilizado no discrimina entre mayusculas y minusculas
+    var find = Album.find({'title': new RegExp('.*' + text + '.*', 'i') });
+
+    find.populate({ path: 'artist' }).exec((err, albums) => {
+        if (err) {
+            res.status(500).send({ message: 'Error en la petición' });
+        } else {
+            if (!albums) {
+                res.status(404).send({ message: 'Albumes no encontrados' });
+            } else {
+                res.status(200).send({ albums });
+            }
+        }
+    });
+
 }
 
 //método de guardar el album
@@ -56,33 +100,6 @@ function saveAlbum(req, res) {
     });
 }
 
-//método de sacar todos los albums
-function getAlbums(req, res) {
-    //tenemos que sacar todos los album de un artista
-    var artistId = req.params.artist;
-
-    if (!artistId) {
-        //sacar todos los album de la bd
-        var find = Album.find({}).sort('title');
-    } else {
-        //sacar todos los album de la bd según una condición
-        var find = Album.find({ artist: artistId }).sort('year');
-    }
-
-    //popular los datos de artista,
-    find.populate({ path: 'artist' }).exec((err, albums) => {
-        if (err) {
-            res.status(500).send({ message: 'Error en la petición' });
-        } else {
-            if (!albums) {
-                res.status(404).send({ message: 'No se encuentra los albums' });
-            } else {
-                res.status(200).send({ albums });
-            }
-        }
-    });
-}
-
 //método para actualizar el album
 function updateAlbum(req, res) {
     var albumId = req.params.id;
@@ -90,7 +107,7 @@ function updateAlbum(req, res) {
 
     Album.findByIdAndUpdate(albumId, update, (err, albumUpdated) => {
         if (err) {
-            res.status(500).send({ message: 'Error al guardar el album' });
+            res.status(500).send({ message: 'Error al actualizar el album' });
         } else {
             if (!albumUpdated) {
                 res.status(404).send({ message: 'Album no actualizado correctamente' });
@@ -192,5 +209,6 @@ module.exports = {
     updateAlbum,
     deleteAlbum,
     uploadImage,
-    getImageFile
+    getImageFile,
+    searchAlbums
 };

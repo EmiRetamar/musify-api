@@ -7,8 +7,6 @@ var fs = require('fs');
 //cargar módulo de paginación
 var mongoosePaginate = require('mongoose-pagination');
 
-var Artist = require('../models/artist');
-var Album = require('../models/album');
 var Song = require('../models/song');
 
 //método para ver la canción
@@ -33,7 +31,7 @@ function getSong(req, res) {
 //método de sacar todos las cancioens
 function getSongs(req, res) {
     //tenemos que sacar todos los album de un artista
-    var albumId = req.params.artist;
+    var albumId = req.params.album;
 
     if (!albumId) {
         //sacar todos los album de la bd
@@ -56,6 +54,23 @@ function getSongs(req, res) {
         } else {
             if (!songs) {
                 res.status(404).send({ message: 'No hay canciones' });
+            } else {
+                res.status(200).send({ songs });
+            }
+        }
+    });
+}
+
+function searchSongs(req, res) {
+    var text = req.params.text;
+
+    // El filtro utilizado no discrimina entre mayusculas y minusculas
+    Song.find({'name': new RegExp('.*' + text + '.*', 'i') }, (err, songs) => {
+        if (err) {
+            res.status(500).send({ message: 'Error en la petición' });
+        } else {
+            if (!songs) {
+                res.status(404).send({ message: 'Canciones no encontradas' });
             } else {
                 res.status(200).send({ songs });
             }
@@ -94,7 +109,7 @@ function updateSong(req, res) {
 
     Song.findByIdAndUpdate(songId, update, (err, songUpdate) => {
         if (err) {
-            res.status(500).send({ message: 'Error al guardar la canción' });
+            res.status(500).send({ message: 'Error al actualizar la canción' });
         } else {
             if (!songUpdate) {
                 res.status(404).send({ message: 'Canción no actualizada correctamente' });
@@ -185,5 +200,6 @@ module.exports = {
     updateSong,
     deleteSong,
     uploadFile,
-    getSongFile
+    getSongFile,
+    searchSongs
 };
