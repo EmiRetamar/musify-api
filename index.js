@@ -6,14 +6,7 @@ var mongoose = require('mongoose');
 //cargar modulo app
 var app = require('./app');
 //configurar un puerto para nuestra API
-//var port = process.env.PORT || 3977;
-
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config();
-}
-
-const DB_URI = process.env.DB_URI;
-const PORT = process.env.PORT || 3977;
+var port = process.env.PORT || 3977;
 
 /*
 Para eliminar el aviso de mongoose que devuelve por la consola donde hemos
@@ -23,7 +16,7 @@ mongoose.Promise = global.Promise;
 
 //hacer la conexion a mongodb
 //hacer una función de callback
-mongoose.connect('mongodb+srv://admin:javascript11@cluster0-oqidx.mongodb.net/test?retryWrites=true&w=majority', { useMongoClient: true }, (err, res) => {
+mongoose.connect('mongodb://localhost:27017/musify', { useMongoClient: true }, (err, res) => {
     //si hay error salta una exepción
     if (err) {
         throw err;
