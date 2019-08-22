@@ -10,13 +10,15 @@ let port = process.env.PORT || 3977;
 // Se define el entorno (desarrollo o produccion)
 process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
 
+// Se configura el url de conexion a la base de datos
 let urlDB;
 
-// Se configura el url de conexion a la base de datos
 if (process.env.NODE_ENV === 'dev')
     urlDB = 'mongodb://localhost:27017/musify';
 else
     urlDB = 'mongodb://admin:javascript11@cluster0-oqidx.mongodb.net/test?retryWrites=true&w=majority';
+
+process.env.MongoDB_URI = urlDB;
 
 /*
 Para eliminar el aviso de mongoose que devuelve por la consola donde hemos
@@ -26,7 +28,7 @@ mongoose.Promise = global.Promise;
 
 //hacer la conexion a mongodb
 //hacer una función de callback
-mongoose.connect(urlDB, { useMongoClient: true }, (err, res) => {
+mongoose.connect(process.env.MongoDB_URI, { useMongoClient: true }, (err, res) => {
     //si hay error salta una exepción
     if (err) {
         throw err;
