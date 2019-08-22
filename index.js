@@ -16,7 +16,7 @@ let urlDB;
 if (process.env.NODE_ENV === 'dev')
     urlDB = 'mongodb://localhost:27017/musify';
 else
-    urlDB = 'mongodb://admin:javascript11@cluster0-oqidx.mongodb.net/test?retryWrites=true&w=majority';
+    urlDB = 'mongodb+srv://admin:javascript11@cluster0-oqidx.mongodb.net/test?retryWrites=true&w=majority';
 
 process.env.MongoDB_URI = urlDB;
 
