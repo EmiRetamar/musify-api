@@ -2,11 +2,21 @@
 'use strict'
 
 //cargar el modulo de mongodb
-var mongoose = require('mongoose');
+let mongoose = require('mongoose');
 //cargar modulo app
-var app = require('./app');
+let app = require('./app');
 //configurar un puerto para nuestra API
-var port = process.env.PORT || 3977;
+let port = process.env.PORT || 3977;
+// Se define el entorno (desarrollo o produccion)
+process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
+
+let urlDB;
+
+// Se configura el url de conexion a la base de datos
+if (process.env.NODE_ENV === 'dev')
+    urlDB = 'mongodb://localhost:27017/musify';
+else
+    urlDB = 'mongodb+srv://admin:javascript11@cluster0-oqidx.mongodb.net/test?retryWrites=true&w=majority';
 
 /*
 Para eliminar el aviso de mongoose que devuelve por la consola donde hemos
@@ -16,7 +26,7 @@ mongoose.Promise = global.Promise;
 
 //hacer la conexion a mongodb
 //hacer una función de callback
-mongoose.connect('mongodb://localhost:27017/musify', { useMongoClient: true }, (err, res) => {
+mongoose.connect(urlDB, { useMongoClient: true }, (err, res) => {
     //si hay error salta una exepción
     if (err) {
         throw err;
